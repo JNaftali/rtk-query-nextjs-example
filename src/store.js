@@ -50,9 +50,12 @@ export function removeUndefined(state) {
   if (typeof state === 'undefined') return null
   if (Array.isArray(state)) return state.map(removeUndefined)
   if (typeof state === 'object' && state !== null) {
-    return Object.fromEntries(Object.entries(state).map(([key, value]) => {
-      return [key, removeUndefined(value)]
-    }))
+    return Object.entries(state).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: removeUndefined(value)
+      }
+    }, {})
   }
 
   return state
